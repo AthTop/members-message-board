@@ -13,12 +13,12 @@ exports.postForm = [
   validateRegister,
   async (req, res, next) => {
     const errors = validationResult(req);
+    const { username, firstName, lastName } = req.body;
     if (!errors.isEmpty()) {
-      const { username, firstName, lastName } = req.body;
       res.locals.pageTitle = "Register";
       res.locals.form = { username, firstName, lastName };
       res.locals.inputErrors = errors.array();
-      res.status(400).render("register");
+      return res.status(400).render("register");
     }
     try {
       const hashedPassword = await bcrypt.hash(req.body.password, 10);
