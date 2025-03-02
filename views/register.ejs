@@ -2,7 +2,7 @@
 
 <form action="register" method="POST">
   <%- include("partials/formError") %>
-  <h1>Register</h1>
+  <h1><%= locals.pageTitle %></h1>
   <label for="username">Enter Username: </label>
   <input type="text" name="username" id="username" value="<%= locals.form && locals.form.username %>" required />
   <label for="firstName">First Name: </label>

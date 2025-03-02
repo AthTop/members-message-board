@@ -8,8 +8,8 @@ CREATE TABLE IF NOT EXISTS users (
     firstName VARCHAR (255),
     lastName VARCHAR (255),
     password_hash VARCHAR (255),
-    isMember BOOLEAN,
-    isAdmin BOOLEAN  
+    member BOOLEAN,
+    admin BOOLEAN  
 );
 
 CREATE TABLE IF NOT EXISTS message (

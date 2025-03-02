@@ -3,6 +3,7 @@ const { validationResult } = require("express-validator");
 const { validateRegister } = require("../lib/validateRegister");
 const { DatabaseError } = require("pg");
 const bcrypt = require("bcryptjs");
+const { genPassword } = require("../lib/passwordUtils");
 
 exports.getForm = (req, res) => {
   res.locals.pageTitle = "Register";
@@ -21,7 +22,7 @@ exports.postForm = [
       return res.status(400).render("register");
     }
     try {
-      const hashedPassword = await bcrypt.hash(req.body.password, 10);
+      const hashedPassword = genPassword(req.body.password);
       await db.insertNewUser(username, firstName, lastName, hashedPassword);
       req.session.message = "Registered successfully";
       res.redirect("/success");

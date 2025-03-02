@@ -1,0 +1,11 @@
+<%- include("partials/header")%>
+
+<form action="/login" method="POST">
+  <%- include("partials/formError") %>
+  <h1><%= locals.pageTitle %></h1>
+  <label for="username">Username: </label>
+  <input type="text" name="username" id="username" required />
+  <label for="password">Password: </label>
+  <input type="password" name="password" id="password" required/>
+  <button type="submit">Login</button>
+</form>

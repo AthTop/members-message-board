@@ -5,6 +5,8 @@ const passport = require("passport");
 const registerRoute = require("./routes/register");
 const indexRoute = require("./routes/index");
 const successRoute = require("./routes/success");
+const loginRoute = require("./routes/login");
+const logoutRoute = require("./routes/logout");
 const { DatabaseError } = require("pg");
 require("dotenv").config();
 
@@ -32,16 +34,22 @@ app.use(
 );
 
 require("./config/passport");
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Middleware
 app.use((req, res, next) => {
   res.locals.siteTitle = "MessageBoard";
+  console.log(req.session);
+  console.log(req.user);
   next();
 });
 
 // Routes
 app.use("/register", registerRoute);
 app.use("/success", successRoute);
+app.use("/login", loginRoute);
+app.use("/logout", logoutRoute);
 app.use("/", indexRoute);
 
 app.use("/", (err, req, res, next) => {
@@ -50,6 +58,12 @@ app.use("/", (err, req, res, next) => {
     res.locals.error = "An internal server error has occurred.";
     res.locals.errorStatus = 500;
     res.status(500).render("error");
+  }
+  if (err instanceof UnauthorizedError) {
+    res.locals.pageTitle = "Error";
+    res.locals.error = "You don't have permission to view this resource";
+    res.locals.errorStatus = err.status;
+    res.status(err.status).render("error");
   }
 });
 
