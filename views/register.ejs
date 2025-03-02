@@ -1,0 +1,17 @@
+<%- include("partials/header")%>
+
+<form action="register" method="POST">
+  <%- include("partials/formError") %>
+  <h1>Register</h1>
+  <label for="username">Enter Username: </label>
+  <input type="text" name="username" id="username" value="<%= locals.form && locals.form.username %>" required />
+  <label for="firstName">First Name: </label>
+  <input type="text" name="firstName" id="firstName" value="<%= locals.form && locals.form.firstName %>" required/>
+  <label for="lastName">Last Name: </label>
+  <input type="text" name="lastName" id="lastName" value="<%= locals.form && locals.form.lastName %>" required/>
+  <label for="password">Password: </label>
+  <input type="password" name="password" id="password" required/>
+  <label for="confirmPassword">Confirm Password: </label>
+  <input type="password" name="confirmPassword" id="confirmPassword" required/>
+  <button type="submit">Register</button>
+</form>
