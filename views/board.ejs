@@ -1,0 +1,7 @@
+<%- include("partials/header")%>
+
+<% if(locals.currentUser && locals.messages) { %>
+    <% locals.messages.forEach(message => { %> 
+        <%- include ("partials/message", { message })
+    <% }); %>
+<% }; %>

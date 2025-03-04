@@ -33,4 +33,43 @@ const getUserById = async (id) => {
   return rows[0];
 };
 
-module.exports = { pool, getUserByUsername, insertNewUser, getUserById };
+const getMessages = async () => {
+  const { rows } = await pool.query(`
+    SELECT message.*, username, firstName, lastName FROM message
+          JOIN users_message ON message.id = message_id
+          JOIN users ON users_id = users.id;
+    `);
+  return rows;
+};
+
+const setMember = async (id) => {
+  await pool.query(
+    `
+    UPDATE users
+    SET member = true
+    WHERE id = $1;
+    `,
+    [id]
+  );
+};
+
+const setAdmin = async (id) => {
+  await pool.query(
+    `
+    UPDATE users
+    SET admin = true
+    WHERE id = $1;
+    `,
+    [id]
+  );
+};
+
+module.exports = {
+  pool,
+  getUserByUsername,
+  insertNewUser,
+  getUserById,
+  getMessages,
+  setMember,
+  setAdmin,
+};

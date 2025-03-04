@@ -7,7 +7,9 @@ const indexRoute = require("./routes/index");
 const successRoute = require("./routes/success");
 const loginRoute = require("./routes/login");
 const logoutRoute = require("./routes/logout");
+const secretRoute = require("./routes/secret");
 const { DatabaseError } = require("pg");
+const { UnauthorizedError } = require("./lib/errors");
 require("dotenv").config();
 
 const app = express();
@@ -40,6 +42,7 @@ app.use(passport.session());
 // Middleware
 app.use((req, res, next) => {
   res.locals.siteTitle = "MessageBoard";
+  res.locals.currentUser = req.user;
   console.log(req.session);
   console.log(req.user);
   next();
@@ -50,21 +53,24 @@ app.use("/register", registerRoute);
 app.use("/success", successRoute);
 app.use("/login", loginRoute);
 app.use("/logout", logoutRoute);
+app.use("/secret", secretRoute);
 app.use("/", indexRoute);
 
 app.use("/", (err, req, res, next) => {
+  res.locals.pageTitle = "Error";
   if (err instanceof DatabaseError) {
-    res.locals.pageTitle = "Error";
     res.locals.error = "An internal server error has occurred.";
     res.locals.errorStatus = 500;
-    res.status(500).render("error");
+    return res.status(500).render("error");
   }
   if (err instanceof UnauthorizedError) {
-    res.locals.pageTitle = "Error";
     res.locals.error = "You don't have permission to view this resource";
     res.locals.errorStatus = err.status;
-    res.status(err.status).render("error");
+    return res.status(err.status).render("error");
   }
+  res.locals.error = "Other error";
+  res.locals.errorStatus = 500;
+  return res.status(err.status).render("error");
 });
 
 const PORT = process.env.PORT || 3000;

@@ -15,7 +15,7 @@ const verifyCallback = async (username, password, done) => {
       return done(null, false);
     }
   } catch (err) {
-    done(err);
+    return done(err);
   }
 };
 
@@ -30,8 +30,12 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser(async (userId, done) => {
   try {
     const user = await db.getUserById(userId);
-    done(null, user);
+    if (user) {
+      return done(null, user);
+    } else {
+      return done(null, false);
+    }
   } catch (err) {
-    done(err);
+    return done(err);
   }
 });
