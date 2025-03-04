@@ -64,6 +64,21 @@ const setAdmin = async (id) => {
   );
 };
 
+const postMessage = async (title, message, userId) => {
+  await pool.query(
+    `
+    WITH inserted_message AS(
+      INSERT INTO message
+      (title, text)
+      VALUES ($1, $2)
+      RETURNING id) 
+    INSERT INTO users_message ( message_id, users_id)
+    SELECT id, $3 FROM inserted_message
+    `,
+    [title, message, userId]
+  );
+};
+
 module.exports = {
   pool,
   getUserByUsername,
@@ -72,4 +87,5 @@ module.exports = {
   getMessages,
   setMember,
   setAdmin,
+  postMessage,
 };

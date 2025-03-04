@@ -8,6 +8,7 @@ const successRoute = require("./routes/success");
 const loginRoute = require("./routes/login");
 const logoutRoute = require("./routes/logout");
 const secretRoute = require("./routes/secret");
+const boardRoute = require("./routes/board");
 const { DatabaseError } = require("pg");
 const { UnauthorizedError } = require("./lib/errors");
 require("dotenv").config();
@@ -43,8 +44,6 @@ app.use(passport.session());
 app.use((req, res, next) => {
   res.locals.siteTitle = "MessageBoard";
   res.locals.currentUser = req.user;
-  console.log(req.session);
-  console.log(req.user);
   next();
 });
 
@@ -54,6 +53,7 @@ app.use("/success", successRoute);
 app.use("/login", loginRoute);
 app.use("/logout", logoutRoute);
 app.use("/secret", secretRoute);
+app.use("/board", boardRoute);
 app.use("/", indexRoute);
 
 app.use("/", (err, req, res, next) => {
