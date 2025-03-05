@@ -1,5 +1,6 @@
 const { Client } = require("pg");
 require("dotenv").config();
+const fs = require("fs");
 
 const SQL = `
 CREATE TABLE IF NOT EXISTS users (
@@ -31,6 +32,11 @@ const DROP = `
   DROP TABLE users, message, users_message;
 `;
 
+const sqlSession = fs.readFileSync(
+  "node_modules/connect-pg-simple/table.sql",
+  "utf-8"
+);
+
 async function main() {
   console.log("seeding...");
   const client = new Client({
@@ -38,6 +44,7 @@ async function main() {
   });
   await client.connect();
   await client.query(SQL);
+  await client.query(sqlSession);
   await client.end();
   console.log("done");
 }
