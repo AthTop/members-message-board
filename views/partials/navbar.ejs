@@ -1,0 +1,17 @@
+<div class="nav">
+  <a href="/" class="logo">Members' Club</a>
+  <ul>
+    <a href="/"><li>Home</li></a>
+    <a href="/board"><li>Message Board</li></a>
+    <a href="/register"><li>Register</li></a>
+    <a href="/secret">Riddles</a>
+  </ul>
+  <ul>
+    <% if(!locals.currentUser) { %>
+    <a href="/login">Login</a>
+    <% } else { %>
+    <p>Hi, <%= locals.currentUser.username %>!</p>
+    <a href="/logout">Logout</a>
+    <% } %>
+  </ul>
+</div>

@@ -79,6 +79,16 @@ const postMessage = async (title, message, userId) => {
   );
 };
 
+const deleteMessageById = async (id) => {
+  await pool.query(
+    `
+    DELETE FROM message
+    WHERE id = $1;
+    `,
+    [id]
+  );
+};
+
 module.exports = {
   pool,
   getUserByUsername,
@@ -88,4 +98,5 @@ module.exports = {
   setMember,
   setAdmin,
   postMessage,
+  deleteMessageById,
 };

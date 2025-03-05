@@ -1,10 +1,19 @@
 <%- include("partials/header")%>
 
-<% if(locals.currentUser && locals.messages) { %>
-    <a href="board/newpost">Post new message</a>
-    <div class="board-container">
+<div class="board">
+
+<% if(locals.currentUser) { %> 
+    <a href="board/newpost" class="link-button">Post new message</a>
+<% } %>
+
+<% if(locals.messages.length > 0) { %>
+        <div class="messages-container">
         <% locals.messages.forEach(message => { %> 
             <%- include ("partials/message", { message }) %>
         <% }); %>
     </div>
-<% }; %>
+<% } else { %>
+    <p>There are no messages yet.</p>
+<% } %>
+
+</div>

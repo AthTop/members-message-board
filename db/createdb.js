@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS message (
 
 CREATE TABLE IF NOT EXISTS users_message (
   users_id INTEGER REFERENCES users(id),
-  message_id INTEGER REFERENCES message(id),
+  message_id INTEGER REFERENCES message(id) ON DELETE CASCADE,
   CONSTRAINT pk_users_message PRIMARY KEY(users_id, message_id) 
 );
 

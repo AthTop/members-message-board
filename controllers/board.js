@@ -2,22 +2,19 @@ const { DatabaseError } = require("pg");
 const db = require("../db/queries");
 const { isAuth } = require("../routes/authMiddleware");
 
-exports.get = [
-  isAuth,
-  async (req, res, next) => {
-    try {
-      const messages = await db.getMessages();
-      if (messages) {
-        res.locals.pageTitle = "Board";
-        res.locals.messages = messages;
-        res.render("board");
-      }
-    } catch (err) {
-      const dbErr = new DatabaseError();
-      return next(dbErr);
+exports.get = async (req, res, next) => {
+  try {
+    const messages = await db.getMessages();
+    if (messages) {
+      res.locals.pageTitle = "Board";
+      res.locals.messages = messages;
+      res.render("board");
     }
-  },
-];
+  } catch (err) {
+    const dbErr = new DatabaseError();
+    return next(dbErr);
+  }
+};
 
 exports.getNewpost = [
   isAuth,
@@ -34,8 +31,8 @@ exports.post = async (req, res, next) => {
       await db.postMessage(title, text, req.user.id);
       res.redirect("/board");
     }
-  } catch(err) {
+  } catch (err) {
     const dbErr = new DatabaseError();
     return next(dbErr);
   }
-}
+};

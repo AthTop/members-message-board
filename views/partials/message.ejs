@@ -1,10 +1,17 @@
 <div class="message">
   <h3><%= message.title %></h3>
   <p><%= message.text %></p>
-  <p><%= message.posted %></p>
-  <% if(message.firstname && message.lastname) {%>
-    <p><%= message.firstname %> <%= message.lastname.at(0) %>.</p>
+  <% if(locals.currentUser.member) { %>
+    <p>Posted: <%= message.posted %></p>
+    <% if(message.firstname && message.lastname) {%>
+      <p>User: <%= message.firstname %> <%= message.lastname.at(0) %>.</p>
+    <% } else { %>
+      <p>User: <%= message.username %></p>
+    <% } %>
+    <% if(locals.currentUser.admin) { %>
+      <a href="delete/<%= message.id %>" class="link-button">Delete post</a>
+    <% } %>
   <% } else { %>
-    <p><%= message.username %></p>
-  <% } %>
+    <p>User: Anonymous </p>
+    <% } %>
 </div>

@@ -9,6 +9,7 @@ const loginRoute = require("./routes/login");
 const logoutRoute = require("./routes/logout");
 const secretRoute = require("./routes/secret");
 const boardRoute = require("./routes/board");
+const deleteRoute = require("./routes/delete")
 const { DatabaseError } = require("pg");
 const { UnauthorizedError } = require("./lib/errors");
 require("dotenv").config();
@@ -54,6 +55,7 @@ app.use("/login", loginRoute);
 app.use("/logout", logoutRoute);
 app.use("/secret", secretRoute);
 app.use("/board", boardRoute);
+app.use("/delete", deleteRoute);
 app.use("/", indexRoute);
 
 app.use("/", (err, req, res, next) => {
